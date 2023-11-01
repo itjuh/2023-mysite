@@ -5,7 +5,7 @@ import { mcode } from "./data/mem_data.js";
 
 console.log(mcode);
 // 약관동의 넣기 : #conf
-$('#conf').html(mcode.conf);
+$("#conf").html(mcode.conf);
 
 /**********************************************
   약관동의 전체 체크 시 모든 체크박스 변경하기
@@ -13,36 +13,34 @@ $('#conf').html(mcode.conf);
 // 원리 : 개별체크박스가 모두 체크되면 전체체크하기
 // 1. 대상선정
 // 1-1. 모두동의 체크박스 : #chk_all
-const chkAll = $('#chk_all');
+const chkAll = $("#chk_all");
 // 1-2. 개별 체크박스 공총 : .chk
-const chkEach = $('.chk');
+const chkEach = $(".chk");
 
 // 2. 체크박스 변경 이벤트 함수 만들기
-chkAll.change(function(){
+chkAll.change(function () {
   // 1. 체크박스 체크여부 확인하기
-  let isChk = $(this).prop('checked');
+  let isChk = $(this).prop("checked");
   console.log(isChk);
   // 2. 전체 체크박스가 체크상태(true)이면
   // 개별박스도 모두 true로 변경
   // 미체크상태면 개별박스도 동일하게 변경
-  chkEach.prop('checked',isChk);
+  chkEach.prop("checked", isChk);
   // chkEach.attr('checked',isChk);
   // attr도 변경 가능함
-
 }); ////// 모두동의 체크박스 change //////////////
 
-
 // 대상 : .chk -> chkEach변수
-chkEach.change(function(){
+chkEach.change(function () {
   // 1. 체크개수 알아오기 : length -> 개수리턴
-  let num = $('.chk:checked').length;
-  console.log('체크개수 : ',num);
+  let num = $(".chk:checked").length;
+  console.log("체크개수 : ", num);
 
   // 2. 체크 개수가 3이면 전체체크박스 체크하기
-  if(num == 3){
-    chkAll.prop('checked',true);
-  }else{
-    chkAll.prop('checked',false);
+  if (num == 3) {
+    chkAll.prop("checked", true);
+  } else {
+    chkAll.prop("checked", false);
   }
 }); ////// 개별 체크박스 change /////////
 
@@ -51,30 +49,30 @@ chkEach.change(function(){
 **********************************************/
 // 통과조건 : #termsService와 #termsPrivacy인 체크박스가 모두 체크되면 통과
 // 1. 대상선정 : .YNbox button
-$('.YNbox button').click(function(){
+$(".YNbox button").click(function () {
   // 1. 버튼 구분하기 : 동의버튼이냐? is('#btnY')
-  let isBtnY = $(this).is('#btnY');
+  let isBtnY = $(this).is("#btnY");
   console.log(isBtnY);
   // 2. 동의 버튼일 경우 : 필수체크 확인 후 회원가입 허가
-  if(isBtnY){ //
-    if($('#termsService').prop('checked') && $('#termsPrivacy').prop('checked')){
+  if (isBtnY) {
+    //
+    if ($("#termsService").prop("checked") && $("#termsPrivacy").prop("checked")) {
       // alert('회원가입으로 이동합니다.');
       // 동의/비동의 박스 스~윽 사라지기
-      $('#conf').fadeOut(300,()=>{
+      $("#conf").fadeOut(300, () => {
         // 사라진 후 회원가입 박스 스~윽 나타나기
-        $('.scont').fadeIn(300);
+        $(".scont").fadeIn(300);
       }); //////////fade ///////////
-    }else{
-      alert('모든 필수사항에 체크하셔야 합니다~');
+    } else {
+      alert("모든 필수사항에 체크하셔야 합니다~");
     } //// 체크박스 확인 if else////////////
   } //////////if동의버튼 클릭////////////
-  else{
-    alert('동의하지 않으셨으므로 메인페이지로 이동합니다.');
-    location.href='index.php'; //그냥 이동
+  else {
+    alert("동의하지 않으셨으므로 메인페이지로 이동합니다.");
+    location.href = "index.php"; //그냥 이동
   } ///////비동의 버튼 클릭//////
   // 3. 비동의 버튼일 경우 : 안내문 alert 하고 메인화면 돌아가기
 }); //////////click///////////////
-
 
 /**************************************************
   [ 속성값을 읽어오는 메서드 2가지 ]
@@ -91,8 +89,6 @@ $('.YNbox button').click(function(){
   prop() - 자바스크립트의 프로퍼티 값이 넘어오기 때문에 boolean, date, function 등도 가져올 수 있음
   .prop()는 .attr() 보다 약 2.5 배 빠름
 **************************************************/
-
-
 
 /***************************************************
     [ 사용자 입력 폼 유효성 검사 ]
@@ -312,7 +308,7 @@ const resEml = (comp) => {
     // 이메일주소 검사 실패
     eml1.siblings(".msg").text("적합하지 않은 이메일 형식입니다!").removeClass("on");
     // 통과 실패 시 패스값 변경5///////////
-    pass = false; 
+    pass = false;
   }
 }; /////////// resEml ///////////////
 
@@ -378,18 +374,73 @@ $("#btnj").click((e) => {
   console.log("통과여부", pass);
 
   // 4. 검사결과에 따라 메시지 보이기
-  if(pass){
-    alert('보그코리아 회원가입을 축하드립니다!!');
-    // 원래는 post방식으로 DB에 회원가입 데이터를 전송해서 입력 후 
+  if (pass) {
+    // 오리지널 POST방식의 데이터 전송 : 전체페이지 새로고침
+    // $(".logF").submit();
+    // 현재 페이지 form정보가 모두 inc/ins.php로 이동하여 데이터를 처리함 
+    // -> 동기화방식(페이지 새로고침)
+
+    // 현재 페이지를 가만히 두고 처리페이지로 비동기적인 처리를 하는 것이 바로 Ajax!!!
+    // -> 비동기방식
+    /*
+      [ Ajax를 이용한 POST방식으로 DB에 데이터 입력하기 ] 
+
+      AJAX = Asyncronous Javascript and XML
+
+      - 비동기 통신이란? 쉽게 말해서 페이지가 새로 고쳐지지 않고 그대로 있으면서
+      일부분만 서버통신을 하는 것을 말한다!
+      - 제이쿼리는 POST방식으로 ajax를 처리하는 메서드를 제공한다
+
+      [ POST방식 Ajax 메서드 ]
+
+      $.post(URL,data,callback)
+      $.post(전송페이지,전송데이터,전송 후 콜백함수)
+
+    */
+
+    $.post(
+    // 1. 전송할 페이지
+    'process/ins.php',
+    // 2. 전송할 데이터 : {} 객체 전송
+    {
+      // 1.아이디
+      "mid" : $("#mid").val(),
+      // 2.비번
+      "mpw" : $("#mpw").val(),
+      // 3.이름
+      "mnm" : $("#mnm").val(),
+      // 4.성별 : 라디오태그의 value속성 필수!
+      "gen" : $(':radio[name=gen]:checked').val(),
+      // 5-1.이메일 앞주소
+      "email1" : $("#email1").val(),
+      // 5-2.이메일 뒷주소
+      "seleml" : $("#seleml").val(),
+      // 5-3.직접입력 이메일 뒷주소
+      "email2" : $("#email2").val(),
+    },
+    // 3. 전송 후 콜백함수 
+    function(res){ //리턴값 받을 매개변수하나 써주면 됨
+      console.log('서버응답 : ',res);
+      if( res ==='ok'){ // 성공 시
+        alert('보그코리아 회원가입을 축하드립니다!!');
+        // location.replace('login.php');
+      }else{ // 실패 시
+        alert(res);
+      }
+    } ///////// 전송 후 콜백함수 ///////////
+    ); ///////////////// ajax POST() ////////////////////
+
+    // 원래는 post방식으로 DB에 회원가입 데이터를 전송해서 입력 후
     // DB처리 완료 시 성공메세지, 로그인페이지 이동
 
+    // alert('보그코리아 회원가입을 축하드립니다!!');
     // 로그인페이지로 리디렉션!
-    location.replace('login.php');
+    // location.replace('login.php');
     // 민감한 입력 데이터 페이지가 다시 돌아와서 보이면 안되기 때문에
     // 히스토리를 지우는 replace()로 이동한다.
   } //////////////// if: 최종통과 ////////////////
-  else{
-    alert('입력을 수정하세요!!');
+  else {
+    alert("입력을 수정하세요!!");
   } /////// 최종 통과실패 ///////////
 }); //////////submit버튼 클릭 //////////////
 

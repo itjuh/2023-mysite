@@ -27,9 +27,7 @@
   </head>
   <body>
     <!-- 1.상단영역 -->
-    <div id="top-area">
-      <header class="top-area ibx common-area"></header>
-    </div>
+    <?php include 'inc/top_area.inc' ?>
     <!-- 2.메인영역 -->
     <div id="main-area">
       <!-- 2-1. 회원가입 페이지 상단영역 -->
@@ -39,7 +37,7 @@
       </header>
       <!-- 2-2. 갤러리 페이지 컨텐츠 박스 -->
       <section class="scont">
-        <form action="process.php" method="post" class="logF">
+        <form action="process/ins.php" method="post" class="logF">
           <ul>
             <!-- 아이디 -->
             <li>
@@ -82,14 +80,12 @@
             <li>
               <span class="itit">성별</span>
               <label for="gen1">남성</label>
-              <input type="radio" name="gen" id="gen1" />
+              <input type="radio" name="gen" id="gen1" value='m'/>
               <label for="gen2">여성</label>
-              <input type="radio" name="gen" id="gen2" checked />
-              <!-- 라디오버튼의 name 속성을
-                          같은 이름으로 쓰면 그룹핑되어
-                          하나만 선택된다! 
-
-                          checked 속성 - 기본체크설정 -->
+              <input type="radio" name="gen" id="gen2" value='w' checked />
+              <!-- 라디오버튼의 name 속성을 같은 이름으로 쓰면 그룹핑되어 하나만 선택된다! 
+                - 백엔드에서 본 라디오버튼의 선택값을 읽으려면 value가 있어야 값을 읽어간다!
+                checked 속성 - 기본체크설정 -->
             </li>
             <!-- 이메일 -->
             <li>
@@ -123,9 +119,7 @@
       <section id="conf"></section>
     </div>
     <!-- 3.하단영역 -->
-    <div id="footer-area">
-      <footer class="footer-area ibx common-area"></footer>
-    </div>
+    <?php include 'inc/footer_area.inc' ?>
     <!-- 위로가기버튼 -->
     <a href="#" class="tbtn fi fi-angle-up">
       <span class="ir">위로가기버튼</span>
