@@ -137,6 +137,7 @@ form.logF input[type=password]`).blur(function () {
   *********************************************/
   else if (cid == "mid") {
     console.log("아이디 검사결과", vReg(cv, cid));
+    // 1. 아이디 유효성 검사
     if (!vReg(cv, cid)) {
       // 아이디 검사 실패
       $(this).siblings(".msg").text("영문자로 시작하는 6~20글자 영문자/숫자").removeClass("on");
@@ -145,12 +146,68 @@ form.logF input[type=password]`).blur(function () {
     } //////////if///////////////
     else {
       // 통과 시
-      // 1. DB를 조회하여 같은 아이디가 있다면
-      // '이미 사용중인 아이디 입니다.'
-      // 2. 동일 아이디가 없다면
-      // '멋진 아이디네요~!'
-      $(this).siblings(".msg").text("멋진 아이디네요~!").addClass("on");
+      // 1. DB를 조회하여 같은 아이디가 있다면 : '이미 사용중인 아이디 입니다.'
+      // 2. 동일 아이디가 없다면 : '멋진 아이디네요~!'
       //-> 비동기 통신 Ajax로 서버쪽에 아이디 중복 검사 필요!
+      /**
+        [ Ajax로 중복 아이디 검사하기 ] 
+        ajax처리 유형 2가지
+
+        1) post방식 처리 메서드
+        - $.post(url,data,callback)
+
+        2) get방식 처리 메서드
+        - $.get(url,callback)
+        -> get방식은 url로 키=값 형식으로 데이터를 전송하기 때문에
+        따로 데이터를 보내지 않음
+
+        3) 위의 2가지 유형 중 처리방식 메서드
+        - $.ajax({
+          전송할 페이지,
+          전송 방식,
+          보낼 데이터,
+          전송할 데이터 타입,
+          비동기옵션,
+          성공처리,
+          실패처리
+        })
+        $.ajax(객체) 객체 안에 7가지 유형의 데이터를 보냄
+       */
+      console.log('중복검사 시작');
+      // 2. 아이디 중복검사
+      $.ajax({
+        // 1. 전송할 페이지(url)
+        url:'./process/chkID.php',
+        // 2. 전송방식(type)
+        type:'post',
+        // 3. 보낼데이터(data) - 객체형식으로 키:값으로 전송
+        data:{'mid':$('#mid').val()},
+        // 4. 전송할 데이터 타입(dataType) ex)html, xml, 등등 달라짐
+        dataType:'html',
+        // 5. 비동기 옵션
+        // -> 비동기옵션은 본 처리를 비동기적으로 처리하겠다는 것임(기본값 true)
+        // -> 동기적처리(순서대로처리됨) , 비동기처리(순서와 개별로 따로 처리하고 있음)
+        // -> false로 해야 동기화처리되어 아이디의 유효성검사를 거지치고 내려옴
+        async:false,
+        // 6. 성공처리 : 리턴값을 받는 경우
+        success: function(res){
+          // res - 리턴 된 결과값
+          if(res=='ok'){ //아이디가 중복되지 않은 경우
+            $('#mid').siblings(".msg").text("멋진 아이디네요~!").addClass("on");
+          }else{ // 아이디가 중복 된 경우
+            $('#mid').siblings(".msg").text("이미 사용중인 아이디 입니다.").removeClass("on");
+            pass = false;
+            console.log('중복아이디: ', pass);
+          } ////아이디 중복검사 분기
+        },
+        // 7. 실패처리 : 
+        // xhr - XMLHttpRequest객체
+        // status - 실패상태코드
+        // error - 에러결과값
+        error:function(xhr,status,error){
+          alert('연결처리 실패: '+error);
+        }
+      }) //////////// ajax 메서드 ///////////
     } //// 아이디 검사결과 ///////////////
   } ////////// id 검사 ///////////
 
@@ -289,7 +346,7 @@ $("#email1,#email2").on("keyup", function () {
 
   // 4. 이메일 전체주소 조합하기
   let comp = eml1.val() + "@" + backEml;
-  console.log(comp);
+  // console.log(comp);
   resEml(comp);
 }); //////// key이벤트 ////////
 
@@ -423,7 +480,9 @@ $("#btnj").click((e) => {
       console.log('서버응답 : ',res);
       if( res ==='ok'){ // 성공 시
         alert('보그코리아 회원가입을 축하드립니다!!');
-        // location.replace('login.php');
+
+        // 최초 로그인을 위해 로그인 페이지로
+        location.replace('login.php');
       }else{ // 실패 시
         alert(res);
       }

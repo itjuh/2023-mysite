@@ -84,13 +84,16 @@ $(()=>{
             case '회원가입' :
                 url = 'member';
                 break;
+            case '로그아웃' :
+                url = 'index';
+                break;
             case '갤러리' :
                 url = 'gallery';
                 break;
         } ////////switch case/////////////
 
         // 3. 페이지 이동하기
-        if(atxt == '로그인' ||atxt =='회원가입'||atxt=='갤러리'){
+        if(atxt == '로그인' ||atxt =='회원가입'||atxt=='갤러리'||atxt=='로그아웃'){
             location.href = url+'.php';
         }else{
             // sns는 새창열기
